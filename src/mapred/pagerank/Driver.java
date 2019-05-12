@@ -22,21 +22,21 @@ public class Driver {
 		String tmpdir = parser.get("tmpdir");
 		String url_input = parser.get("uinput");
 
-		getLinks(input, tmpdir + "/iter-0/output");
+		getLinks(input, tmpdir + "/iter-0");
 
 		//Read/Write files in every iterations.
 		for(int i = 0; i < iterations; i++){
 			String dir = tmpdir + "/iter-" + (i+1);
 			String dirPrev = tmpdir + "/iter-" + i;
 			if (i == iterations - 1){
-				getRanks(dirPrev + "/output", "/last_iter/output");
+				getRanks(dirPrev, tmpdir + "/last_iter");
 			}
 			else{
-				getRanks(dirPrev + "/output", dir + "/output");
+				getRanks(dirPrev, dir);
 			}
 		}
 
-		getPages(tmpdir + "/last_iter/output", output, url_input);
+		getPages(tmpdir + "/last_iter", output, url_input);
 
 	}
 
