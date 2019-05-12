@@ -1,11 +1,9 @@
-package main.pageRank;
-
 import java.io.IOException;
 
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Mapper;
 
-public class HashtagMapper extends Mapper<LongWritable, Text, IntWritable, IntWritable> {
+public class LinkMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     protected void map(LongWritable key, Text value,
@@ -15,6 +13,6 @@ public class HashtagMapper extends Mapper<LongWritable, Text, IntWritable, IntWr
         String from = pair[0];
         String to = pair[1];
 
-        context.write(new IntWritable())
+        context.write(from, to);
     }
 }
