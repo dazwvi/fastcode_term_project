@@ -1,0 +1,5 @@
+1 http://www1.hollins.edu/ 
+2 http://www.hollins.edu/ 
+3 http://www1.hollins.edu/Docs/CompTech/Network/webmail_faq.htm 
+4 http://www1.hollins.edu/Docs/Forms/GetForms.htm 
+5 http://www1.hollins.edu/Docs/misc/travel.htm
