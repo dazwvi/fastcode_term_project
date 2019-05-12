@@ -12,8 +12,6 @@ import org.apache.hadoop.io.Text;
 public class Driver {
 	private final static int iterations = 30;
 	public static HashSet<String> nodeSet = new HashSet<String>();
-	public final static double damp_factor = 0.85;
-	public final static String sinkSign = "|";
 
 	public static void main(String args[]) throws Exception {
 		SimpleParser parser = new SimpleParser(args);
@@ -21,20 +19,23 @@ public class Driver {
 		String input = parser.get("input");
 		String output = parser.get("output");
 		String tmpdir = parser.get("tmpdir");
+		String url_input = parser.get("uinput");
 
-		getLinks(input, tmpdir + "/get_link/output");
+		getLinks(input, tmpdir + "/iter-0/output");
 
 		//Read/Write files in every iterations.
 		for(int i = 0; i < iterations; i++){
 			String dir = tmpdir + "/iter-" + (i+1);
 			String dirPrev = tmpdir + "/iter-" + i;
 			if (i == iterations - 1){
-				getRanks(dir + "/tmp", dirPrev + "/output", output, i);
+				getRanks(dirPrev + "/output", "/last_iter/output", i);
 			}
 			else{
-				getRanks(dir + "/tmp", dirPrev + "/output", dir + "/output", i);
+				getRanks(dirPrev + "/output", dir + "/output", i);
 			}
 		}
+
+		getPages(tmpdir + "/last_iter/output", output, url_input);
 
 	}
 
@@ -56,25 +57,18 @@ public class Driver {
 	}
 
 	/**
-	 * @param temp_dir
 	 * @param input
 	 * @param output
-	 * @param current_iter
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 * @throws InterruptedException
 	 */
 	private static void getRanks(
-			String temp_dir,
-			int current_iter,
 			String input, 
 			String output) throws IOException,
 			ClassNotFoundException, InterruptedException {
 		
-		Configuration conf = new Configuration();
-		conf.set("tmpDir", tmpDir);
-		
-		Optimizedjob job = new Optimizedjob(conf, input, output,
+		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
 				"Get similarities between #job and all other hashtags");
 		job.setClasses(RankMapper.class, RankReducer.class, null);
 		job.setMapOutputClasses(Text.class, Text.class);
