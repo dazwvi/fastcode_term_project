@@ -20,7 +20,7 @@ public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
 		urls = new HashMap<String, String>();
 		
 		Path path = new Path(context.getConfiguration().get("urls_path"));
-		FileSystem fs = FileSystem.get(new Configuration());
+		FileSystem fs = path.getFileSystem(new Configuration());
 		BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
 
 		String line;
