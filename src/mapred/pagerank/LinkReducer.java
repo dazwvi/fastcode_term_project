@@ -1,3 +1,4 @@
+package mapred.pagerank;
 import java.io.IOException;
 
 import org.apache.hadoop.io.*;
@@ -7,7 +8,10 @@ public class LinkReducer extends Reducer<Text, Text, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<Text> value, Context context) throws IOException, InterruptedException {
-        String outLinks = String.join(",", value);
-        context.write(key, new Text("1," + outLinks));
+        String outLinks = "1";
+        for (Text val : value) {
+            outLinks += "," + val.toString();
+        }
+        context.write(key, new Text(outLinks));
     }
 }

@@ -1,10 +1,11 @@
-package mapred.hashtagsim;
+package mapred.pagerank;
 
 import java.util.HashSet;
 import java.io.IOException;
 import mapred.job.Optimizedjob;
 import mapred.util.FileUtil;
 import mapred.util.SimpleParser;
+import mapred.pagerank.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
@@ -28,10 +29,10 @@ public class Driver {
 			String dir = tmpdir + "/iter-" + (i+1);
 			String dirPrev = tmpdir + "/iter-" + i;
 			if (i == iterations - 1){
-				getRanks(dirPrev + "/output", "/last_iter/output", i);
+				getRanks(dirPrev + "/output", "/last_iter/output");
 			}
 			else{
-				getRanks(dirPrev + "/output", dir + "/output", i);
+				getRanks(dirPrev + "/output", dir + "/output");
 			}
 		}
 
