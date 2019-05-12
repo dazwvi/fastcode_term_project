@@ -2,13 +2,13 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.w3c.dom.Text;
+import java.util.Arrays;
 
 public class RankMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        String[] links = value.split("\\s+", 2);
+        String[] links = value.toString().split("\\s+", 2);
         String link = links[0];
         String[] values = links[1].split(",");
         float rank = Float.parseFloat(values[0]);

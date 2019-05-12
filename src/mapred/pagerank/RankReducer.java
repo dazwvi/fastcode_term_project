@@ -9,7 +9,7 @@ public class RankReducer extends Reducer<Text, Text, Text, Text> {
     protected void reduce(Text key, Iterable<Text> value, Context context) throws IOException, InterruptedException {
         String outLinks = "";
         float rank = 0;
-        float factor = 0.85;
+        float factor = 0.85f;
         for (Text v : value) {
             String val = v.toString();
             if (val.startsWith("|")) {
