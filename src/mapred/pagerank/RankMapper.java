@@ -14,12 +14,15 @@ public class RankMapper extends Mapper<LongWritable, Text, Text, Text> {
         String[] values = links[1].split(",");
         float rank = Float.parseFloat(values[0]);
         String[] outLinks = Arrays.copyOfRange(values, 1, values.length);
+        String joinedLinks = "";
         
         for (String outLink : outLinks) {
             float outRank = rank / outLinks.length;
             context.write(new Text(outLink), new Text(Float.toString(outRank)));
+            joinedLinks += ",";
+            joinedLinks += outLink;
         }
 
-        context.write(new Text(link), new Text("|" + String.join(",", outLinks)));
+        context.write(new Text(link), new Text("|" + joinedLinks.substring(1)));
     }
 }
