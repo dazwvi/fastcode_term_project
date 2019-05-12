@@ -11,11 +11,8 @@ public class Entry {
 
 		long start = System.currentTimeMillis();
 
-		if (program.equals("hashtagsim"))
-			mapred.hashtagsim.Driver.main(args);
-		
-		else if (program.equals("ngramcount"))
-			mapred.ngramcount.Driver.main(args);
+		if (program.equals("pagerank"))
+			mapred.pagerank.Driver.main(args);
 		
 		else {
 			System.out.println("Unknown program!");
