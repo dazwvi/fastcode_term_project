@@ -1,11 +1,18 @@
-package main.pageRank;
+package mapred.pagerank;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 
 import org.apache.hadoop.io.*;
 import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.conf.Configuration;
 
-public class PageMapper extends Mapper<LongWritable, Text, IntWritable, IntWritable> {
+public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
+	HashMap urls;
 
 	@Override
 	protected void setup(Context context) throws IOException
@@ -53,7 +60,7 @@ public class PageMapper extends Mapper<LongWritable, Text, IntWritable, IntWrita
             throws IOException, InterruptedException {
         String[] value_list = value.toString().split("\t");
 		
-		String url = urls.get(value_list[0]);
+		String url = urls.get(value_list[0]).toString();
 		String rank = value_list[1];
 		
 		context.write(new Text(rank), new Text(url));
