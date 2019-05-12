@@ -23,7 +23,7 @@ public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
 		FileSystem fs = FileSystem.get(new Configuration());
 		BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
 		
-		boolean firstLine = true;
+		boolean firstLine = false;
 		int currentNode = 0;
 		int nodesCount = 0;
 
@@ -58,11 +58,13 @@ public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
     protected void map(LongWritable key, Text value,
                        Context context)
             throws IOException, InterruptedException {
-        String[] value_list = value.toString().split("\t");
-		
+		String[] value_list = value.toString().split("\\s", 2);
+
+		System.out.println("!!!");
 		String url = urls.get(value_list[0]).toString();
-		String rank = value_list[1];
-		
+		System.out.println(url);
+		String rank = value_list[1].split(",")[0];
+		System.out.println(rank);
 		context.write(new Text(rank), new Text(url));
     }
 }
