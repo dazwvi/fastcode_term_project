@@ -11,7 +11,7 @@ import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 
 public class Driver {
-	private final static int iterations = 30;
+	private final static int iterations = 1;
 	public static HashSet<String> nodeSet = new HashSet<String>();
 
 	public static void main(String args[]) throws Exception {
