@@ -13,6 +13,6 @@ public class LinkMapper extends Mapper<LongWritable, Text, Text, Text> {
         String from = pair[0];
         String to = pair[1];
 
-        context.write(from, to);
+        context.write(new Text(from), new Text(to));
     }
 }
