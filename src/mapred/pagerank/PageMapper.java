@@ -22,33 +22,12 @@ public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
 		Path path = new Path(context.getConfiguration().get("urls_path"));
 		FileSystem fs = FileSystem.get(new Configuration());
 		BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
-		
-		boolean firstLine = true;
-		int currentNode = 0;
-		int nodesCount = 0;
 
 		String line;
 		while ((line = br.readLine()) != null)
 		{
 			String[] split = line.split(" ");
-			
-			if (firstLine)
-			{
-				nodesCount = Integer.parseInt(split[0]);
-				firstLine = false;
-			}
-			else
-			{
-				if (currentNode < nodesCount)
-				{
-					urls.put(split[0], split[1]);
-					currentNode++;
-				}
-				else 
-				{
-					break;
-				}
-			}
+			urls.put(split[0], split[1]);
 		}
 		
 		br.close();
