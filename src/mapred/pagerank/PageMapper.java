@@ -39,11 +39,8 @@ public class PageMapper extends Mapper<LongWritable, Text, Text, Text> {
             throws IOException, InterruptedException {
 		String[] value_list = value.toString().split("\\s", 2);
 
-		System.out.println("!!!");
 		String url = urls.get(value_list[0]).toString();
-		System.out.println(url);
 		String rank = value_list[1].split(",")[0];
-		System.out.println(rank);
 		context.write(new Text(rank), new Text(url));
     }
 }
