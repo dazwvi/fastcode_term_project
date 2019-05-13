@@ -110,7 +110,5 @@ public class PageRank {
         }catch (IOException e) {
             e.printStackTrace();
         }
-
-        double[] arr = {0.14999998, 0.7875, 0.7875, 0.7875, 1.6375};
     }
 }
