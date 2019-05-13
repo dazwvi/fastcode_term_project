@@ -71,7 +71,7 @@ public class Driver {
 			ClassNotFoundException, InterruptedException {
 		
 		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
-				"Get similarities between #job and all other hashtags");
+				"Calculate PageRank");
 		job.setClasses(RankMapper.class, RankReducer.class, null);
 		job.setMapOutputClasses(Text.class, Text.class);
 		job.run();
