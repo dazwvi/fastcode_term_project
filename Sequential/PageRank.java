@@ -35,10 +35,10 @@ public class PageRank {
                 outdeg[i] += one;
             if(outdeg[i] == 0) outdeg[i] = 1;
         }
-        for(int r:outdeg) {
-            System.out.print(r + " ");
-        }
-        System.out.println();
+//        for(int r:outdeg) {
+//            System.out.print(r + " ");
+//        }
+//        System.out.println();
         calcPR();
     }
 
@@ -87,7 +87,10 @@ public class PageRank {
                 int i = Integer.parseInt(buffer[0]);
                 int j = Integer.parseInt(buffer[1]);
                 pr.graph[i][j] = 1;
+                if(i > numUrls) numUrls = i;
+                if(j > numUrls) numUrls = j;
             }
+            br.close();
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,10 +106,11 @@ public class PageRank {
             while ((line = br.readLine()) != null) {
                 String[] buffer = line.split(" ");
                 int i = Integer.parseInt(buffer[0]);
-                String url = buffer[1];
-                System.out.printf(String.format("%.3f", pr.pagerank[i]) + ": "+ i + "." + url +"\n");
+                String url = buffer[1].replaceAll("%", "%%");
+                System.out.printf(String.format("%.5f", pr.pagerank[i]) + ": "+ i + "." + url + "\n");
             }
-            System.out.println("\n" + ite);
+            br.close();
+            System.out.println("Number of iterations: \n" + ite);
         }catch (IOException e) {
             e.printStackTrace();
         }
