@@ -11,7 +11,7 @@ public class LinkMapper extends Mapper<LongWritable, Text, Text, Text> {
     protected void map(LongWritable key, Text value,
                        Context context)
             throws IOException, InterruptedException {
-        String[] pair = value.toString().split(" ");
+        String[] pair = value.toString().split("\\s+");
         String from = pair[0];
         String to = pair[1];
 
