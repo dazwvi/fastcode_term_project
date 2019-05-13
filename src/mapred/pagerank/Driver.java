@@ -29,14 +29,15 @@ public class Driver {
 			String dir = tmpdir + "/iter-" + (i+1);
 			String dirPrev = tmpdir + "/iter-" + i;
 			if (i == iterations - 1){
-				getRanks(dirPrev, tmpdir + "/last_iter");
+				// getRanks(dirPrev, tmpdir + "/last_iter");
+				getRanks(dirPrev, output);
 			}
 			else{
 				getRanks(dirPrev, dir);
 			}
 		}
 
-		getPages(tmpdir + "/last_iter", output, url_input);
+		// getPages(tmpdir + "/last_iter", output, url_input);
 
 	}
 
@@ -70,7 +71,7 @@ public class Driver {
 			ClassNotFoundException, InterruptedException {
 		
 		Optimizedjob job = new Optimizedjob(new Configuration(), input, output,
-				"Get similarities between #job and all other hashtags");
+				"Calculate PageRank");
 		job.setClasses(RankMapper.class, RankReducer.class, null);
 		job.setMapOutputClasses(Text.class, Text.class);
 		job.run();
