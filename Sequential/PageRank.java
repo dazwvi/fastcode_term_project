@@ -10,13 +10,10 @@ import java.io.BufferedWriter;
 
 
 public class PageRank {
-    HashMap<Integer, ArrayList<Integer>> graph;
-    HashMap<Integer, ArrayList<Integer>> M;
-    Set<Integer> links;
-//    public double pagerank[];
+    HashMap<Integer, HashSet<Integer>> graph;
+    HashMap<Integer, HashSet<Integer>> M;
     HashMap<Integer, Double> pagerank;
     HashMap<Integer, Double> pagerank_prev;
-//    public double pagerank_prev[];
     HashMap<Integer, Integer> outdeg;
     public double dampingFactor;
     public int numUrls;
@@ -38,11 +35,6 @@ public class PageRank {
         for (int key: graph.keySet()){
             outdeg.put(key, graph.get(key).size());
         }
-//        System.out.println("Outdegrees:");
-//        for(int r:outdeg.keySet()) {
-//            System.out.print("key: " +r +" "+ outdeg.get(r) + " ");
-//        }
-//        System.out.println();
         calcPR();
     }
 
@@ -60,7 +52,6 @@ public class PageRank {
                 result += pagerank_prev.get(node) / outdeg.get(node);
             }
         }catch (NullPointerException e) {
-            return 0.0;
         }
         return result;
     }
@@ -78,27 +69,25 @@ public class PageRank {
     }
 
     public static void main(String[] args) {
+        long start = System.currentTimeMillis();
         PageRank pr = new PageRank();
         String line = null;
         int numUrls = Integer.parseInt(args[0]);
         String inputPath = args[1];
-//        String urlPath = args[2];
 
         int ite = 1;
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(inputPath));
-            pr.graph = new HashMap<Integer, ArrayList<Integer>>(numUrls);
-            pr.M = new HashMap<Integer, ArrayList<Integer>>(numUrls);
-//            pr.links = new HashSet<Integer>();
+            pr.graph = new HashMap<Integer, HashSet<Integer>>();
+            pr.M = new HashMap<Integer, HashSet<Integer>>(numUrls);
             while ((line = br.readLine()) != null) {
                 String[] buffer = line.split("\\s+");
                 if(buffer[0].equals("#")) continue;;
                 int i = Integer.parseInt(buffer[0]);
                 int j = Integer.parseInt(buffer[1]);
-                ArrayList<Integer> g_arrli = new ArrayList<Integer>();
-                ArrayList<Integer> m_arrli = new ArrayList<Integer>();
-//                pr.links.add(j);
+                HashSet<Integer> g_arrli = new HashSet<Integer>();
+                HashSet<Integer> m_arrli = new HashSet<Integer>();
                 if(pr.graph.get(i) != null) {
                     pr.graph.get(i).add(j);
                 }
@@ -114,60 +103,27 @@ public class PageRank {
                     pr.M.put(j, m_arrli);
                 }
             }
-//            System.out.println("Set:");
-//            for(int link : pr.links) {
-//                if(!pr.graph.containsKey(link)) {
-//                    ArrayList<Integer> arr = new ArrayList<Integer>();
-//                    for(int node : pr.graph.keySet()) {
-//                        if(node != link) {
-//                            arr.add((node));
-//                        }
-//                    }
-//                    pr.graph.put(link, arr);
-//                }
-//                System.out.println(link + " ");
-//            }
         }catch (IOException e) {
             e.printStackTrace();
         }
         pr.init(numUrls);
-        while (!pr.hasConverged()) {
+        int it = 30;
+        while (it>0) {
             pr.calcPR();
-            ite += 1;
+            ite++;
+            --it;
         }
+        long end = System.currentTimeMillis();
 
-//        try {
-//            BufferedReader br = new BufferedReader(new FileReader(urlPath));
-//            System.out.printf("Page Rank: \n");
-//            while ((line = br.readLine()) != null) {
-//                String[] buffer = line.split(" ");
-//                int i = Integer.parseInt(buffer[0]);
-//                String url = buffer[1].replaceAll("%", "%%");
-//                System.out.printf(pr.pagerank[i] + ": "+ i + "." + url + "\n");
-//            }
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }
         for(int r:pr.pagerank.keySet())
             System.out.printf(r +": "+pr.pagerank.get(r) + "\n");
-//        for (int key: pr.graph.keySet()){
-//            System.out.print("Key: " +key+ " values: [");
-//            for(int j : pr.graph.get(key))
-//                System.out.print(j + " ");
-//            System.out.println("]");
-//        }
-//        System.out.println();
-//        for (int key: pr.M.keySet()){
-//            System.out.print("Key: " +key+ " values: [");
-//            for(int j : pr.M.get(key))
-//                System.out.print(j + " ");
-//            System.out.println("]");
-//        }
         System.out.println("Number of iterations: \n" + ite);
         double sum_ = 0;
         for(int r:pr.pagerank.keySet()) {
             sum_ += pr.pagerank.get(r);
         }
         System.out.println("Sum of ranks: " + sum_);
+
+        System.out.println("Time: " + (end - start) / 1000F + " seconds");
     }
 }
