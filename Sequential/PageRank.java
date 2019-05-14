@@ -81,13 +81,15 @@ public class PageRank {
             BufferedReader br = new BufferedReader(new FileReader(inputPath));
             pr.graph = new HashMap<Integer, HashSet<Integer>>();
             pr.M = new HashMap<Integer, HashSet<Integer>>(numUrls);
+            HashSet<Integer> l = new HashSet<Integer>();
             while ((line = br.readLine()) != null) {
                 String[] buffer = line.split("\\s+");
                 if(buffer[0].equals("#")) continue;;
                 int i = Integer.parseInt(buffer[0]);
                 int j = Integer.parseInt(buffer[1]);
                 HashSet<Integer> g_arrli = new HashSet<Integer>();
-                HashSet<Integer> m_arrli = new HashSet<Integer>();
+                l.add(i);
+                l.add(j);
                 if(pr.graph.get(i) != null) {
                     pr.graph.get(i).add(j);
                 }
@@ -95,12 +97,34 @@ public class PageRank {
                     g_arrli.add(j);
                     pr.graph.put(i, g_arrli);
                 }
-                if(pr.M.get(j) != null) {
-                    pr.M.get(j).add(i);
+
+            }
+            for(int node : pr.graph.keySet()) {
+                if(l.contains(node)) {
+                    l.remove(node);
                 }
-                else {
-                    m_arrli.add(i);
-                    pr.M.put(j, m_arrli);
+            }
+            for(int node : l) {
+                HashSet<Integer> a = new HashSet<Integer>();
+                for(int i : pr.graph.keySet()){
+                    a.add(i);
+                }
+                for(int n : l) {
+                    if(n != node)
+                        l.add(n);
+                }
+                pr.graph.put(node, a);
+            }
+            for(int node : pr.graph.keySet()) {
+                for(int n : pr.graph.get(node)) {
+                    if(pr.M.get(n) != null) {
+                        pr.M.get(n).add(node);
+                    }
+                    else {
+                        HashSet<Integer> m_arrli = new HashSet<Integer>();
+                        m_arrli.add(node);
+                        pr.M.put(n, m_arrli);
+                    }
                 }
             }
         }catch (IOException e) {
